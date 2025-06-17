@@ -1,20 +1,22 @@
 {
     "name": "motion-vscode-extension",
-    "displayName": "Motion for VS Code",
-    "description": "Copilot enhancements for Motion, the animation library for JavaScript, React, and Vue.",
+    "displayName": "Motion",
+    "description": "VS Code and Copilot enhancements for Motion, the animation library for JavaScript, React, and Vue.",
     "publisher": "motion",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "homepage": "https://motion.dev",
     "repository": {
         "type": "git",
         "url": "https://github.com/motiondivision/motion-vscode"
     },
     "keywords": [
-        "Framer Motion",
-        "Motion",
-        "Easing",
-        "Springs",
-        "Animation"
+        "framer motion",
+        "motion",
+        "easing",
+        "springs",
+        "animation",
+        "css generation",
+        "css"
     ],
     "author": {
         "name": "Motion"
@@ -48,7 +50,8 @@
         "compile-tests": "tsc -p . --outDir out",
         "watch-tests": "tsc -p . -w --outDir out",
         "pretest": "yarn run compile-tests && yarn run compile",
-        "check-types": "tsc --noEmit"
+        "check-types": "tsc --noEmit",
+        "new": "vsce package --no-yarn && vsce publish"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.10",
