@@ -1,9 +1,12 @@
-# Motion for VS Code
+<h1 align="center">
+  <img src="images/readme-header.png" alt="Motion for VS Code" />
+</h1>
 
 Supercharge your animation development process with Motion for VS Code.
 
 -   **Copilot docs:** Turn Copilot into a Motion expert with the latest docs.
--   **CSS spring generation:** Let Copilot generate `linear()` springs with Motion.
+-   **CSS generation:** Enhance Copilot's CSS generation with real Motion springs.
+-   More features coming soon
 
 <!--
 Additionally, [Motion+](https://motion.dev/plus) users gain access to:
@@ -13,13 +16,27 @@ Additionally, [Motion+](https://motion.dev/plus) users gain access to:
 -   **Spring editor:** Edit Motion springs inline, in real-time
 -->
 
+## Install
+
+Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Motion.motion-vscode-extension)
+
 ## Features
 
-### AI docs
+### Copilot docs
 
-Load the full and latest Motion documentation into Copilot.
+Load the latest Motion documentation directly into Copilot. Add docs to a chat by clicking on "Add Context":
 
-[Learn more about AI docs](https://motion.dev/docs/ai-llm-documentation)
+![Screenshot of the Copilot chat window](images/readme-add-context.png)
+
+Navigating to "MCP Resources..."
+
+![Screenshot of the resources list](images/readme-add-context-2.png)
+
+Search for the docs you're looking for:
+
+![Screenshot of the search box](images/readme-add-context-3.png)
+
+[Learn more about Copilot docs](https://motion.dev/docs/ai-llm-documentation)
 
 ### CSS generation
 

@@ -1,9 +1,9 @@
 {
     "name": "motion-vscode-extension",
-    "displayName": "Motion",
-    "description": "Visual editor for Motion springs and easing curves, via GUI and AI.",
+    "displayName": "Motion for VS Code",
+    "description": "Copilot enhancements for Motion, the animation library for JavaScript, React, and Vue.",
     "publisher": "motion",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "homepage": "https://motion.dev",
     "repository": {
         "type": "git",
