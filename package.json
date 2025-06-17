@@ -38,6 +38,30 @@
                 "id": "motion.mcp-servers",
                 "label": "Motion"
             }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "motion-activitybar",
+                    "title": "Motion",
+                    "icon": "images/logo.svg"
+                }
+            ]
+        },
+        "views": {
+            "motion-activitybar": [
+                {
+                    "type": "webview",
+                    "id": "motion-editor",
+                    "name": "Motion"
+                }
+            ]
+        },
+        "viewsWelcome": [
+            {
+                "view": "motion-editor",
+                "contents": "Welcome to Motion! Select a bezier curve or spring to get started."
+            }
         ]
     },
     "scripts": {
