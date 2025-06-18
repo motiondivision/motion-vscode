@@ -37,7 +37,7 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
         if (!this._authenticated) {
             const htmlPath = path.join(
                 this._context.extensionPath,
-                "src",
+                "dist",
                 "plus",
                 "auth.html"
             )
@@ -61,7 +61,7 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
 
         const htmlPath = path.join(
             this._context.extensionPath,
-            "src",
+            "dist",
             "plus",
             "bezier.html"
         )
