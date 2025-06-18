@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bezier Curve Editor</title>
+        <style>
+            body {
+                --accent: var(--vscode-foreground);
+                background: var(--vscode-panel-background);
+                color: var(--vscode-editor-foreground);
+                font-family: var(--vscode-font-family);
+                font-size: var(--vscode-font-size);
+                line-height: var(--vscode-editor-line-height, 1.6);
+                display: flex;
+                align-items: stretch;
+                justify-content: flex-start;
+                flex-direction: column;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .curve-container {
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .bezier-svg {
+                width: 100%;
+                aspect-ratio: 1;
+                display: block;
+                border-radius: 20px;
+                background: var(--vscode-input-background);
+            }
+
+            .inputs {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .input-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .input-row label {
+                width: 80px;
+                flex-shrink: 0;
+                flex-grow: 0;
+            }
+
+            .input-row input[type="text"] {
+                flex: 1;
+                font-size: 1em;
+                padding: 0.2em 0.5em;
+                background: var(--vscode-input-background);
+                color: var(--vscode-input-foreground);
+                border-radius: 4px;
+                border: 1px solid
+                    var(--vscode-editor-selectionHighlightBackground);
+            }
+
+            .control-point {
+                cursor: grab;
+            }
+
+            .reset-control-point {
+                cursor: pointer;
+                transition: fill linear 0.2s;
+            }
+
+            .reset-control-point:hover {
+                fill: var(--accent);
+            }
+
+            .preview {
+                background: var(--vscode-input-background);
+                padding: 5px;
+                border-radius: 20px;
+                width: 100%;
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+                cursor: pointer;
+            }
+
+            .preview-box {
+                width: 30px;
+                aspect-ratio: 1;
+                background: var(--vscode-input-foreground);
+                border-radius: 50%;
+            }
+
+            .message {
+                display: flex;
+                text-align: center;
+                opacity: 0.8;
+                max-width: 28em;
+                flex-direction: column;
+                height: 100vh;
+                justify-content: center;
+                max-width: 200px;
+            }
+
+            .message.empty {
+                max-width: 100%;
+            }
+
+            .message p {
+                text-wrap: balance;
+            }
+
+            p {
+                margin: 0 0 1em 0;
+                color: var(--vscode-editor-foreground);
+                font-size: inherit;
+                line-height: inherit;
+            }
+
+            h1 {
+                color: var(--vscode-editor-foreground);
+                font-family: var(--vscode-font-family);
+                font-size: 1em;
+                font-weight: 600;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="message empty">
+            <h1>No animation selected</h1>
+            <p>Select a bezier curve or spring in your code to edit it here.</p>
+        </div>
+        <div class="curve-container" id="curve-container">
+            <h1>Edit Bezier Curve</h1>
+            <svg class="bezier-svg">
+                <polyline
+                    id="border"
+                    fill="none"
+                    stroke="var(--vscode-editor-selectionHighlightBackground)"
+                    stroke-width="1"
+                ></polyline>
+                <path
+                    id="curve"
+                    d=""
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="3"
+                ></path>
+                <polyline
+                    id="control-1-tether"
+                    fill="none"
+                    stroke="var(--vscode-editor-selectionHighlightBackground)"
+                    stroke-width="2"
+                    stroke-dasharray="4, 2"
+                ></polyline>
+                <polyline
+                    id="control-2-tether"
+                    fill="none"
+                    stroke="var(--vscode-editor-selectionHighlightBackground)"
+                    stroke-width="2"
+                    stroke-dasharray="4, 2"
+                ></polyline>
+                <circle
+                    id="reset-control-1"
+                    class="reset-control-point"
+                    cx="0"
+                    cy="0"
+                    r="7"
+                    fill="var(--vscode-editor-selectionHighlightBackground)"
+                />
+                <circle
+                    id="reset-control-2"
+                    class="reset-control-point"
+                    cx="0"
+                    cy="0"
+                    r="7"
+                    fill="var(--vscode-editor-selectionHighlightBackground)"
+                />
+                <circle
+                    id="control-1"
+                    class="control-point"
+                    cx="0"
+                    cy="0"
+                    r="7"
+                    fill="var(--accent)"
+                />
+                <circle
+                    id="control-2"
+                    class="control-point"
+                    cx="0"
+                    cy="0"
+                    r="7"
+                    fill="var(--accent)"
+                />
+            </svg>
+            <section class="preview">
+                <div class="preview-box"></div>
+            </section>
+        </div>
+        <script>
+            const progress = (from, to, value) => {
+                const toFromDifference = to - from
+
+                return toFromDifference === 0
+                    ? 1
+                    : (value - from) / toFromDifference
+            }
+
+            const emptyMessage = document.querySelector(".message")
+            const bezierCurveContainer =
+                document.getElementById("curve-container")
+            const svg = document.querySelector(".bezier-svg")
+            const border = document.getElementById("border")
+            const curve = document.getElementById("curve")
+            const control1 = document.getElementById("control-1")
+            const control2 = document.getElementById("control-2")
+            const control1Tether = document.getElementById("control-1-tether")
+            const control2Tether = document.getElementById("control-2-tether")
+            const resetControl1 = document.getElementById("reset-control-1")
+            const resetControl2 = document.getElementById("reset-control-2")
+
+            let bezierPaddingPercentage = 10
+            let bezierPadding = 40
+
+            let currentBezier = undefined
+            let currentAnimation = undefined
+            let vscode = undefined
+
+            function sendBezier(newBezier) {
+                const bezierAsString = newBezier.join(", ")
+
+                if (!window.acquireVsCodeApi) {
+                    console.warn(
+                        "acquireVsCodeApi is not available. Make sure this script is running in a VS Code webview."
+                    )
+                }
+
+                if (!vscode) {
+                    vscode = window.acquireVsCodeApi()
+                }
+
+                vscode.postMessage({
+                    type: "updateBezier",
+                    value: bezierAsString,
+                })
+            }
+
+            function drawCurve() {
+                if (!currentBezier) {
+                    return
+                }
+
+                const [x1, y1, x2, y2] = currentBezier
+
+                const width = svg.clientWidth || svg.parentElement.offsetWidth
+                const height =
+                    svg.clientHeight || svg.parentElement.offsetHeight
+                svg.setAttribute("viewBox", `0 0 ${width} ${height}`)
+
+                bezierPadding = (bezierPaddingPercentage / 100) * width
+
+                // Calculate drawable area
+                const left = bezierPadding
+                const top = bezierPadding
+                const right = width - bezierPadding
+                const bottom = height - bezierPadding
+                const drawableWidth = right - left
+                const drawableHeight = bottom - top
+
+                // Draw border box
+                border.setAttribute(
+                    "points",
+                    `${left},${top} ${left},${bottom} ${right},${bottom}`
+                )
+
+                // Draw bezier curve
+                const d = `M ${left},${bottom} C ${left + x1 * drawableWidth},${
+                    bottom - y1 * drawableHeight
+                } ${left + x2 * drawableWidth},${
+                    bottom - y2 * drawableHeight
+                } ${right},${top}`
+                curve.setAttribute("d", d)
+
+                resetControl1.setAttribute("cx", left)
+                resetControl1.setAttribute("cy", bottom)
+                resetControl2.setAttribute("cx", right)
+                resetControl2.setAttribute("cy", top)
+
+                // Draw control points
+                const x1Pos = left + x1 * drawableWidth
+                const y1Pos = bottom - y1 * drawableHeight
+                const x2Pos = left + x2 * drawableWidth
+                const y2Pos = bottom - y2 * drawableHeight
+
+                control1.setAttribute("cx", x1Pos)
+                control1.setAttribute("cy", y1Pos)
+                control2.setAttribute("cx", x2Pos)
+                control2.setAttribute("cy", y2Pos)
+
+                control1Tether.setAttribute(
+                    "points",
+                    `${left},${bottom} ${x1Pos},${y1Pos}`
+                )
+                control2Tether.setAttribute(
+                    "points",
+                    `${right},${top} ${x2Pos},${y2Pos}`
+                )
+            }
+
+            function playPreviewAnimation(delay = 500) {
+                if (currentAnimation) {
+                    currentAnimation.cancel()
+                }
+
+                const previewBox = document.querySelector(".preview-box")
+                const previewContainer = document.querySelector(".preview")
+
+                const initialX =
+                    previewContainer.clientWidth -
+                    previewBox.clientWidth -
+                    parseFloat(getComputedStyle(previewContainer).paddingLeft) *
+                        2
+
+                currentAnimation = previewBox.animate(
+                    {
+                        transform: [
+                            `translate3d(-${initialX}px, 0, 0)`,
+                            "none",
+                        ],
+                    },
+                    {
+                        duration: 500,
+                        easing:
+                            "cubic-bezier(" + currentBezier.join(", ") + ")",
+                        delay,
+                        fill: "backwards",
+                    }
+                )
+            }
+
+            function updateBezierCurve() {
+                if (!currentBezier) {
+                    return
+                }
+
+                drawCurve()
+                playPreviewAnimation()
+            }
+
+            const eventHandlers = {
+                clear: () => {
+                    emptyMessage.style.display = "flex"
+                    bezierCurveContainer.style.display = "none"
+                    currentBezier = undefined
+                },
+                setBezier: ({ value }) => {
+                    emptyMessage.style.display = "none"
+                    bezierCurveContainer.style.display = "flex"
+
+                    const newBezier = value
+                        .split(",")
+                        .map((n) => parseFloat(n.trim()))
+
+                    if (
+                        newBezier.length === 4 &&
+                        newBezier.every((n) => !isNaN(n))
+                    ) {
+                        currentBezier = newBezier
+                        updateBezierCurve()
+                    }
+                },
+            }
+
+            window.addEventListener("resize", () => {
+                if (currentBezier) {
+                    updateBezierCurve()
+                }
+            })
+
+            /**
+             * Switch to correct view based on messages from the extension
+             */
+            window.addEventListener("message", ({ data }) => {
+                const { type } = data
+
+                const handler = eventHandlers[type]
+                if (handler) {
+                    handler(data)
+                }
+            })
+
+            function startDrag(event, element, onMove) {
+                const { currentTarget } = event
+                let hasMoved = false
+
+                event.preventDefault()
+                element.setPointerCapture(event.pointerId)
+                element.style.cursor = "grabbing"
+
+                const rect = svg.getBoundingClientRect()
+
+                function moveHandler(e) {
+                    hasMoved = true
+                    const x = progress(
+                        rect.left + bezierPadding,
+                        rect.right - bezierPadding,
+                        e.clientX
+                    )
+                    const y = progress(
+                        rect.bottom - bezierPadding,
+                        rect.top + bezierPadding,
+                        e.clientY
+                    )
+
+                    // Limit x and y to max 3 decimal places
+                    const xFixed = Math.round(x * 1000) / 1000
+                    const yFixed = Math.round(y * 1000) / 1000
+                    onMove(xFixed, yFixed)
+                    updateBezierCurve()
+                }
+
+                function upHandler() {
+                    // Reset control point to default position
+                    if (
+                        currentTarget.classList.contains(
+                            "reset-control-point"
+                        ) &&
+                        !hasMoved
+                    ) {
+                        if (currentTarget === resetControl1) {
+                            onMove(0, 0)
+                        } else if (currentTarget === resetControl2) {
+                            onMove(1, 1)
+                        }
+                    }
+
+                    element.releasePointerCapture(event.pointerId)
+                    element.style.cursor = "grab"
+                    document.removeEventListener("pointermove", moveHandler)
+                    document.removeEventListener("pointerup", upHandler)
+                }
+
+                document.addEventListener("pointermove", moveHandler)
+                document.addEventListener("pointerup", upHandler)
+            }
+
+            const setPoint = (xi, yi) => (x, y) => {
+                const newBezier = [...currentBezier]
+                newBezier[xi] = Math.max(0, Math.min(1, x))
+                newBezier[yi] = y
+                sendBezier(newBezier)
+            }
+
+            control1.addEventListener("pointerdown", (e) => {
+                startDrag(e, control1, setPoint(0, 1))
+            })
+
+            control2.addEventListener("pointerdown", (e) => {
+                startDrag(e, control2, setPoint(2, 3))
+            })
+
+            resetControl1.addEventListener("pointerdown", (e) => {
+                startDrag(e, control1, setPoint(0, 1))
+            })
+
+            resetControl2.addEventListener("pointerdown", (e) => {
+                startDrag(e, control2, setPoint(2, 3))
+            })
+
+            document.querySelector(".preview").addEventListener("click", () => {
+                playPreviewAnimation(0)
+            })
+        </script>
+    </body>
+</html>

@@ -1,11 +1,8 @@
 import * as vscode from "vscode"
+import { MotionViewProvider } from "./plus/MotionViewProvider"
 
 export function activate(context: vscode.ExtensionContext) {
     const didChangeEmitter = new vscode.EventEmitter<void>()
-
-    vscode.window.showInformationMessage(
-        "Motion for VS Code has been activated!"
-    )
 
     context.subscriptions.push(
         vscode.lm.registerMcpServerDefinitionProvider("motion.mcp-servers", {
@@ -20,16 +17,20 @@ export function activate(context: vscode.ExtensionContext) {
                     ),
                 ]
             },
-            // resolveMcpServerDefinition: async (definition) => {
-            //     /**
-            //      * if definition.label === "motion-plus" then fetch authentication
-            //      */
-            //     vscode.window.showInformationMessage(
-            //         "Resolving ",
-            //         definition.label
-            //     )
-            //     return definition
-            // },
+        })
+    )
+
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            MotionViewProvider.viewType,
+            new MotionViewProvider(context)
+        )
+    )
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("motion.clearAuthToken", async () => {
+            await context.secrets.delete("motion-auth-token")
+            vscode.window.showInformationMessage("Motion+ token deleted.")
         })
     )
 }

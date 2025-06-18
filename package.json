@@ -38,6 +38,37 @@
                 "id": "motion.mcp-servers",
                 "label": "Motion"
             }
+        ],
+        "commands": [
+            {
+                "command": "motion.clearAuthToken",
+                "title": "Clear Auth Token",
+                "category": "Motion"
+            }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "motion-activitybar",
+                    "title": "Motion",
+                    "icon": "images/logo.svg"
+                }
+            ]
+        },
+        "views": {
+            "motion-activitybar": [
+                {
+                    "type": "webview",
+                    "id": "motion-editor",
+                    "name": "Motion"
+                }
+            ]
+        },
+        "viewsWelcome": [
+            {
+                "view": "motion-editor",
+                "contents": "Welcome to Motion! Select a bezier curve or spring to get started."
+            }
         ]
     },
     "scripts": {
@@ -63,5 +94,8 @@
         "npm-run-all": "^4.1.5",
         "typescript": "^5.8.3"
     },
-    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+    "dependencies": {
+        "node-fetch": "^2.7.0"
+    }
 }
