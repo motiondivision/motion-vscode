@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Authenticate Motion+</title>
+        <style>
+            body {
+                --accent: var(--vscode-foreground);
+                background: var(--vscode-panel-background);
+                color: var(--vscode-editor-foreground);
+                font-family: var(--vscode-font-family);
+                font-size: var(--vscode-font-size);
+                line-height: var(--vscode-editor-line-height, 1.6);
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                flex-direction: column;
+                height: 100vh;
+                margin: 0;
+                padding: 2em;
+                gap: 10px;
+            }
+
+            .message {
+                text-align: center;
+                opacity: 0.8;
+                max-width: 28em;
+                text-wrap: balance;
+            }
+
+            p {
+                color: var(--vscode-editor-foreground);
+                font-size: inherit;
+                line-height: inherit;
+                margin: 0;
+                text-wrap: balance;
+            }
+
+            h1 {
+                color: var(--vscode-editor-foreground);
+                font-family: var(--vscode-font-family);
+                font-size: 1em;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            button {
+                background: var(--vscode-button-background);
+                color: var(--vscode-button-foreground);
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.2s ease-in-out;
+                font-size: 1.1em;
+                padding: 0.5em 1.5em;
+            }
+
+            .error {
+                color: var(--vscode-errorForeground);
+                margin-top: 1em;
+                display: none;
+                text-align: center;
+                text-wrap: balance;
+            }
+
+            a {
+                text-decoration: none !important;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Log in to Motion+</h1>
+        <p class="message">
+            Animation editing tools are exclusive to
+            <a href="https://motion.dev/plus" target="_blank">Motion+</a>
+            members.
+        </p>
+        <button id="login-btn">Authenticate</button>
+        <div id="error" class="error"></div>
+
+        <p class="message">
+            Already a Motion+ member?
+            <a
+                class="message"
+                href="https://plus.motion.dev/profile"
+                target="_blank"
+            >
+                Generate a personal access token
+            </a>
+            to sign in.
+        </p>
+
+        <script>
+            const vscode = acquireVsCodeApi()
+            document
+                .getElementById("login-btn")
+                .addEventListener("click", () => {
+                    vscode.postMessage({ type: "login" })
+                })
+            window.addEventListener("message", (event) => {
+                if (event.data && event.data.type === "loginFailed") {
+                    document.getElementById("error").textContent =
+                        "Login failed. Ensure your auth token is valid."
+                    document.getElementById("error").style.display = "block"
+                }
+            })
+        </script>
+    </body>
+</html>

@@ -1,6 +1,7 @@
 import * as vscode from "vscode"
 import fs from "fs"
 import path from "path"
+import { AuthManager } from "./AuthManager"
 
 const bezierRegex = /cubic-bezier\(([^)]+)\)/
 const arrayRegex =
@@ -10,9 +11,13 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = "motion-editor"
     private _view?: vscode.WebviewView
     private _context: vscode.ExtensionContext
+    private _auth: AuthManager
+    private _authenticated = false
 
     constructor(context: vscode.ExtensionContext) {
         this._context = context
+        this._auth = new AuthManager(context)
+
         vscode.window.onDidChangeTextEditorSelection(
             this._onSelectionChange,
             this,
@@ -20,10 +25,38 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
         )
     }
 
-    resolveWebviewView(webviewView: vscode.WebviewView) {
+    async resolveWebviewView(webviewView: vscode.WebviewView) {
         this._view = webviewView
         webviewView.webview.options = {
             enableScripts: true,
+        }
+
+        // Check authentication
+        this._authenticated = await this._auth.isAuthenticated()
+
+        if (!this._authenticated) {
+            const htmlPath = path.join(
+                this._context.extensionPath,
+                "src",
+                "editors",
+                "auth.html"
+            )
+            let html = fs.readFileSync(htmlPath, "utf8")
+            webviewView.webview.html = html
+
+            webviewView.webview.onDidReceiveMessage(async (message) => {
+                if (message.type === "login") {
+                    const success = await this._auth.authenticate()
+
+                    if (success) {
+                        this._authenticated = true
+                        this.resolveWebviewView(webviewView) // Reload view
+                    } else {
+                        webviewView.webview.postMessage({ type: "loginFailed" })
+                    }
+                }
+            })
+            return
         }
 
         const htmlPath = path.join(

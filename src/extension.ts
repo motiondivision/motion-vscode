@@ -27,8 +27,11 @@ export function activate(context: vscode.ExtensionContext) {
         )
     )
 
-    vscode.window.showInformationMessage(
-        "Motion for VS Code has been activated!"
+    context.subscriptions.push(
+        vscode.commands.registerCommand("motion.clearAuthToken", async () => {
+            await context.secrets.delete("motion-auth-token")
+            vscode.window.showInformationMessage("Motion+ token deleted.")
+        })
     )
 }
 
