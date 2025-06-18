@@ -23,8 +23,7 @@
             .curve-container {
                 display: none;
                 flex-direction: column;
-                align-items: flex-start;
-                width: 100%;
+                align-items: stretch;
                 gap: 10px;
             }
 
@@ -83,17 +82,20 @@
 
             .preview {
                 background: var(--vscode-input-background);
-                padding: 4px;
-                border-radius: 4px;
+                padding: 5px;
+                border-radius: 20px;
                 width: 100%;
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+                cursor: pointer;
             }
 
             .preview-box {
-                width: 18px;
-                height: 18px;
+                width: 30px;
+                aspect-ratio: 1;
                 background: var(--vscode-input-foreground);
-                border-radius: 2px;
-                transition: transform 1.3s cubic-bezier(0.44, 0, 0.56, 1);
+                border-radius: 50%;
             }
 
             .message {
@@ -194,14 +196,9 @@
                     fill="var(--accent)"
                 />
             </svg>
-            <!-- <section class="inputs">
-                <div class="input-row">
-                    <label>Preview</label>
-                    <div class="preview input">
-                        <div class="preview-box"></div>
-                    </div>
-                </div>
-            </section>-->
+            <section class="preview">
+                <div class="preview-box"></div>
+            </section>
         </div>
         <script>
             const progress = (from, to, value) => {
@@ -225,10 +222,11 @@
             const resetControl1 = document.getElementById("reset-control-1")
             const resetControl2 = document.getElementById("reset-control-2")
 
-            const bezierPadding = 40
+            let bezierPaddingPercentage = 10
+            let bezierPadding = 40
 
             let currentBezier = undefined
-
+            let currentAnimation = undefined
             let vscode = undefined
 
             function sendBezier(newBezier) {
@@ -261,6 +259,8 @@
                 const height =
                     svg.clientHeight || svg.parentElement.offsetHeight
                 svg.setAttribute("viewBox", `0 0 ${width} ${height}`)
+
+                bezierPadding = (bezierPaddingPercentage / 100) * width
 
                 // Calculate drawable area
                 const left = bezierPadding
@@ -310,12 +310,44 @@
                 )
             }
 
+            function playPreviewAnimation(delay = 500) {
+                if (currentAnimation) {
+                    currentAnimation.cancel()
+                }
+
+                const previewBox = document.querySelector(".preview-box")
+                const previewContainer = document.querySelector(".preview")
+
+                const initialX =
+                    previewContainer.clientWidth -
+                    previewBox.clientWidth -
+                    parseFloat(getComputedStyle(previewContainer).paddingLeft) *
+                        2
+
+                currentAnimation = previewBox.animate(
+                    {
+                        transform: [
+                            `translate3d(-${initialX}px, 0, 0)`,
+                            "none",
+                        ],
+                    },
+                    {
+                        duration: 500,
+                        easing:
+                            "cubic-bezier(" + currentBezier.join(", ") + ")",
+                        delay,
+                        fill: "backwards",
+                    }
+                )
+            }
+
             function updateBezierCurve() {
                 if (!currentBezier) {
                     return
                 }
 
                 drawCurve()
+                playPreviewAnimation()
             }
 
             const eventHandlers = {
@@ -436,6 +468,10 @@
 
             resetControl2.addEventListener("pointerdown", (e) => {
                 startDrag(e, control2, setPoint(2, 3))
+            })
+
+            document.querySelector(".preview").addEventListener("click", () => {
+                playPreviewAnimation(0)
             })
         </script>
     </body>

@@ -46,6 +46,7 @@ export class AuthManager {
             password: true,
             ignoreFocusOut: true,
         })
+
         if (!token) return false
 
         // Optionally, validate token with endpoint
