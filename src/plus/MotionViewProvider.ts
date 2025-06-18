@@ -38,7 +38,7 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
             const htmlPath = path.join(
                 this._context.extensionPath,
                 "src",
-                "editors",
+                "plus",
                 "auth.html"
             )
             let html = fs.readFileSync(htmlPath, "utf8")
@@ -62,7 +62,7 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
         const htmlPath = path.join(
             this._context.extensionPath,
             "src",
-            "editors",
+            "plus",
             "bezier.html"
         )
         let html = fs.readFileSync(htmlPath, "utf8")
