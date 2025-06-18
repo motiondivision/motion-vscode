@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.6]
+
+-   Updating copy to remove reference to spring.
+
 ## [0.0.5]
 
 -   Fixing build for views.
