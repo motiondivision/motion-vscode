@@ -62,9 +62,7 @@ With Motion for Visual Code Studio, Copilot gains the ability to generate CSS `l
 
 ### Bezier curve editing
 
-When editing a CSS or Motion bezier easing curve while the Motion panel's open, a bezier curve editor will appear.
-
-Changes will be immediately reflected in your code, while
+When editing a CSS or Motion bezier easing curve while the Motion panel's open, a bezier curve editor will appear. Changes will be immediately reflected in your code.
 
 ![Bezier curve editing](images/bezier-editing.gif)
 
