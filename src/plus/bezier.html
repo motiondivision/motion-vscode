@@ -13,7 +13,7 @@
                 font-size: var(--vscode-font-size);
                 line-height: var(--vscode-editor-line-height, 1.6);
                 display: flex;
-                align-items: center;
+                align-items: stretch;
                 justify-content: flex-start;
                 flex-direction: column;
                 height: 100vh;
@@ -109,6 +109,10 @@
                 max-width: 200px;
             }
 
+            .message.empty {
+                max-width: 100%;
+            }
+
             .message p {
                 text-wrap: balance;
             }
@@ -129,7 +133,7 @@
         </style>
     </head>
     <body>
-        <div class="message">
+        <div class="message empty">
             <h1>No animation selected</h1>
             <p>Select a bezier curve or spring in your code to edit it here.</p>
         </div>

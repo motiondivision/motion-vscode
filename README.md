@@ -5,12 +5,16 @@
 Supercharge your animation development process with Motion for VS Code.
 
 -   **Copilot docs:** Turn Copilot into a Motion expert with the latest docs.
--   **CSS generation:** Enhance Copilot's CSS generation with real Motion springs.
--   More features coming soon
+-   **Copilot CSS generation:** Enhance Copilot's CSS generation with real Motion springs.
 
-<!--
 Additionally, [Motion+](https://motion.dev/plus) users gain access to:
 
+-   **Bezier curve editor**: Edit and preview CSS and Motion easing curves.
+-   More features coming soon
+
+![Bezier curve editing](images/bezier-editing.gif)
+
+<!---
 -   **AI+ docs:** Latest docs for Motion+ features like `Cursor` and `Ticker`
 -   **Curve visualisation:** Lets Copilot visually see springs and easing curves
 -   **Spring editor:** Edit Motion springs inline, in real-time
@@ -19,6 +23,12 @@ Additionally, [Motion+](https://motion.dev/plus) users gain access to:
 ## Install
 
 Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Motion.motion-vscode-extension)
+
+### Enable Motion+ features
+
+Generate a [personal access token](https://plus.motion.dev/profile), then click "Authenticate" in the Motion panel to open an input dialog for your token.
+
+![Screenshot of the unauthenticated Motion panel](images/auth.png)
 
 ## Features
 
@@ -49,6 +59,14 @@ With Motion for Visual Code Studio, Copilot gains the ability to generate CSS `l
 ```
 
 [Learn more about CSS generation](https://motion.dev/docs/ai-generate-css-springs-and-easings-llm)
+
+### Bezier curve editing
+
+When editing a CSS or Motion bezier easing curve while the Motion panel's open, a bezier curve editor will appear.
+
+Changes will be immediately reflected in your code, while
+
+![Bezier curve editing](images/bezier-editing.gif)
 
 <!--
 

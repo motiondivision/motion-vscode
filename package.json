@@ -39,6 +39,13 @@
                 "label": "Motion"
             }
         ],
+        "commands": [
+            {
+                "command": "motion.clearAuthToken",
+                "title": "Clear Auth Token",
+                "category": "Motion"
+            }
+        ],
         "viewsContainers": {
             "activitybar": [
                 {

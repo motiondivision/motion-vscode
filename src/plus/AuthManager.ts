@@ -25,7 +25,7 @@ export class AuthManager {
             })
 
             const text = await res.text()
-            console.log("Raw response from /me/is-valid-token:", text)
+
             let data
             try {
                 data = JSON.parse(text)

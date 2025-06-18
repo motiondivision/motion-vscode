@@ -1,5 +1,5 @@
 import * as vscode from "vscode"
-import { MotionViewProvider } from "./editors/MotionViewProvider"
+import { MotionViewProvider } from "./plus/MotionViewProvider"
 
 export function activate(context: vscode.ExtensionContext) {
     const didChangeEmitter = new vscode.EventEmitter<void>()
