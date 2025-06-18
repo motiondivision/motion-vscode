@@ -40,7 +40,7 @@ Search for the docs you're looking for:
 
 ### CSS generation
 
-With Motion for Visual Code Studio, Copilot gains the ability to generate CSS `linear()` easing curves to create springs or other custom easing curves.
+With Motion for Visual Studio Code , Copilot gains the ability to generate CSS `linear()` easing curves to create springs or other custom easing curves.
 
 > Generate a CSS spring that's quite bouncy
 
