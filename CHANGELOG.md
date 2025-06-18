@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.5]
+
+-   Fixing build for views.
+
 ## [0.0.4]
 
 -   Add bezier curve editor.
