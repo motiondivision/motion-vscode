@@ -1,6 +1,6 @@
-import * as vscode from "vscode"
 import fs from "fs"
 import path from "path"
+import * as vscode from "vscode"
 import { AuthManager } from "./AuthManager"
 
 const bezierRegex = /cubic-bezier\(([^)]+)\)/
@@ -39,9 +39,41 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
                 this._context.extensionPath,
                 "dist",
                 "plus",
+                "views",
                 "auth.html"
             )
+
             let html = fs.readFileSync(htmlPath, "utf8")
+
+            // Generate webview-safe URIs for assets
+            const stylesUri = webviewView.webview.asWebviewUri(
+                vscode.Uri.file(
+                    path.join(
+                        this._context.extensionPath,
+                        "dist",
+                        "plus",
+                        "views",
+                        "styles.css"
+                    )
+                )
+            )
+            const scriptUri = webviewView.webview.asWebviewUri(
+                vscode.Uri.file(
+                    path.join(
+                        this._context.extensionPath,
+                        "dist",
+                        "plus",
+                        "views",
+                        "auth.js"
+                    )
+                )
+            )
+
+            // Replace asset paths in HTML
+            html = html
+                .replace('href="styles.css"', `href="${stylesUri}"`)
+                .replace('src="auth.js"', `src="${scriptUri}"`)
+
             webviewView.webview.html = html
 
             webviewView.webview.onDidReceiveMessage(async (message) => {
@@ -63,9 +95,40 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
             this._context.extensionPath,
             "dist",
             "plus",
+            "views",
             "bezier.html"
         )
         let html = fs.readFileSync(htmlPath, "utf8")
+
+        // Generate webview-safe URIs for assets
+        const stylesUri = webviewView.webview.asWebviewUri(
+            vscode.Uri.file(
+                path.join(
+                    this._context.extensionPath,
+                    "dist",
+                    "plus",
+                    "views",
+                    "styles.css"
+                )
+            )
+        )
+        const scriptUri = webviewView.webview.asWebviewUri(
+            vscode.Uri.file(
+                path.join(
+                    this._context.extensionPath,
+                    "dist",
+                    "plus",
+                    "views",
+                    "bezier.js"
+                )
+            )
+        )
+
+        // Replace asset paths in HTML
+        html = html
+            .replace('href="styles.css"', `href="${stylesUri}"`)
+            .replace('src="bezier.js"', `src="${scriptUri}"`)
+
         webviewView.webview.html = html
 
         webviewView.webview.onDidReceiveMessage(async (message) => {

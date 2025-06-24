@@ -28,17 +28,50 @@ const esbuildProblemMatcherPlugin = {
 }
 
 async function copyStaticFiles() {
-    const srcDir = path.join(__dirname, "src", "plus")
-    const destDir = path.join(__dirname, "dist", "plus")
-    if (!fs.existsSync(destDir)) {
-        fs.mkdirSync(destDir, { recursive: true })
+    // Copy .html and .css files from src/plus/views to dist/plus/views
+    const srcViewsDir = path.join(__dirname, "src", "plus", "views")
+    const destViewsDir = path.join(__dirname, "dist", "plus", "views")
+    if (!fs.existsSync(destViewsDir)) {
+        fs.mkdirSync(destViewsDir, { recursive: true })
     }
-    const files = fs.readdirSync(srcDir)
+    const files = fs.readdirSync(srcViewsDir)
     files.forEach((file) => {
-        if (file.endsWith(".html")) {
-            fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file))
+        if (file.endsWith(".html") || file.endsWith(".css")) {
+            fs.copyFileSync(
+                path.join(srcViewsDir, file),
+                path.join(destViewsDir, file)
+            )
         }
     })
+}
+
+async function bundleViewTSX() {
+    // Bundle each .tsx file in src/plus/views to dist/plus/views/[name].js
+    const srcViewsDir = path.join(__dirname, "src", "plus", "views")
+    const destViewsDir = path.join(__dirname, "dist", "plus", "views")
+    if (!fs.existsSync(destViewsDir)) {
+        fs.mkdirSync(destViewsDir, { recursive: true })
+    }
+    const files = fs.readdirSync(srcViewsDir)
+    const tsxFiles = files.filter((file) => file.endsWith(".tsx"))
+    await Promise.all(
+        tsxFiles.map((file) => {
+            const name = path.basename(file, ".tsx")
+            return esbuild.build({
+                entryPoints: [path.join(srcViewsDir, file)],
+                bundle: true,
+                format: "esm",
+                minify: production,
+                sourcemap: !production,
+                outfile: path.join(destViewsDir, name + ".js"),
+                platform: "browser",
+                jsx: "automatic",
+                jsxImportSource: "react",
+                external: [],
+                logLevel: "silent",
+            })
+        })
+    )
 }
 
 async function main() {
@@ -59,11 +92,13 @@ async function main() {
         ],
     })
     if (watch) {
-        await ctx.watch()
         await copyStaticFiles()
+        await bundleViewTSX()
+        await ctx.watch()
     } else {
         await ctx.rebuild()
         await copyStaticFiles()
+        await bundleViewTSX()
         await ctx.dispose()
     }
 }
