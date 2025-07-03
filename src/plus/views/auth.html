@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Authenticate Motion+</title>
+        <link rel="stylesheet" href="styles.css" />
+        <style>
+            body {
+                align-items: center;
+                justify-content: flex-start;
+                padding: 2em;
+                gap: 10px;
+            }
+
+            .message {
+                text-align: center;
+                opacity: 0.8;
+                max-width: 28em;
+                text-wrap: balance;
+            }
+
+            .error {
+                color: var(--vscode-errorForeground);
+                margin-top: 1em;
+                display: none;
+                text-align: center;
+                text-wrap: balance;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Log in to Motion+</h1>
+        <p class="message">
+            Animation editing tools are exclusive to
+            <a href="https://motion.dev/plus" target="_blank">Motion+</a>
+            members.
+        </p>
+        <button id="login-btn">Authenticate</button>
+        <div id="error" class="error"></div>
+
+        <p class="message">
+            Already a Motion+ member?
+            <a
+                class="message"
+                href="https://plus.motion.dev/profile"
+                target="_blank"
+            >
+                Generate a personal access token
+            </a>
+            to sign in.
+        </p>
+        <script type="module" src="auth.js"></script>
+    </body>
+</html>

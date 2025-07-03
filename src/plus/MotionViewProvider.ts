@@ -1,6 +1,6 @@
-import * as vscode from "vscode"
 import fs from "fs"
 import path from "path"
+import * as vscode from "vscode"
 import { AuthManager } from "./AuthManager"
 
 const bezierRegex = /cubic-bezier\(([^)]+)\)/
@@ -25,6 +25,51 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
         )
     }
 
+    private buildView(name: string) {
+        if (!this._view) {
+            return "Error: Webview not initialized."
+        }
+
+        const htmlPath = path.join(
+            this._context.extensionPath,
+            "dist",
+            "plus",
+            "views",
+            name + ".html"
+        )
+
+        let html = fs.readFileSync(htmlPath, "utf8")
+
+        // Generate webview-safe URIs for assets
+        const stylesUri = this._view.webview.asWebviewUri(
+            vscode.Uri.file(
+                path.join(
+                    this._context.extensionPath,
+                    "dist",
+                    "plus",
+                    "views",
+                    "styles.css"
+                )
+            )
+        )
+        const scriptUri = this._view.webview.asWebviewUri(
+            vscode.Uri.file(
+                path.join(
+                    this._context.extensionPath,
+                    "dist",
+                    "plus",
+                    "views",
+                    name + ".js"
+                )
+            )
+        )
+
+        // Replace asset paths in HTML
+        return html
+            .replace('href="styles.css"', `href="${stylesUri}"`)
+            .replace(`src="${name}.js"`, `src="${scriptUri}"`)
+    }
+
     async resolveWebviewView(webviewView: vscode.WebviewView) {
         this._view = webviewView
         webviewView.webview.options = {
@@ -35,14 +80,7 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
         this._authenticated = await this._auth.isAuthenticated()
 
         if (!this._authenticated) {
-            const htmlPath = path.join(
-                this._context.extensionPath,
-                "dist",
-                "plus",
-                "auth.html"
-            )
-            let html = fs.readFileSync(htmlPath, "utf8")
-            webviewView.webview.html = html
+            webviewView.webview.html = this.buildView("auth")
 
             webviewView.webview.onDidReceiveMessage(async (message) => {
                 if (message.type === "login") {
@@ -59,14 +97,7 @@ export class MotionViewProvider implements vscode.WebviewViewProvider {
             return
         }
 
-        const htmlPath = path.join(
-            this._context.extensionPath,
-            "dist",
-            "plus",
-            "bezier.html"
-        )
-        let html = fs.readFileSync(htmlPath, "utf8")
-        webviewView.webview.html = html
+        webviewView.webview.html = this.buildView("bezier")
 
         webviewView.webview.onDidReceiveMessage(async (message) => {
             if (message.type === "updateBezier") {
