@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.7]
+
+-   Allowing bezier editor SVG to overflow.
+
 ## [0.0.6]
 
 -   Updating copy to remove reference to spring.
