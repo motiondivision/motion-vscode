@@ -3,7 +3,7 @@
     "displayName": "Motion",
     "description": "VS Code and Copilot enhancements for Motion, the animation library for JavaScript, React, and Vue.",
     "publisher": "motion",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "homepage": "https://motion.dev",
     "repository": {
         "type": "git",
