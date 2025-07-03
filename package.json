@@ -69,6 +69,13 @@
                 "view": "motion-editor",
                 "contents": "Welcome to Motion! Select a CSS or Motion bezier curve to get started."
             }
+        ],
+        "themes": [
+            {
+                "label": "Motion Dark",
+                "uiTheme": "vs-dark",
+                "path": "./themes/motion-dark.json"
+            }
         ]
     },
     "scripts": {
