@@ -1,56 +1,49 @@
 <h1 align="center">
-  <img src="images/readme-header.png" alt="Motion for VS Code" />
+  <img src="images/readme-header.png" alt="Motion Studio" />
 </h1>
 
-Supercharge your animation development process with Motion for VS Code.
+Streamline your animation development process with Motion Studio. Edit CSS and Motion code directly in-editor with Motion Studio's visual and AI editing tools.
 
--   **Copilot docs:** Turn Copilot into a Motion expert with the latest docs.
--   **Copilot CSS generation:** Enhance Copilot's CSS generation with real Motion springs.
+-   **Documentation**: Update your LLM with the latest Motion docs.
+-   **Curve visualisation**: Enable your LLM to visually understand spring and easing functions.
 
-Additionally, [Motion+](https://motion.dev/plus) users gain access to:
+[Motion+](https://motion.dev/plus) members also gain access to:
 
--   **Bezier curve editor**: Edit and preview CSS and Motion easing curves.
--   More features coming soon
+-   **Bezier curve editor**: Real-time editing and preview of Motion and CSS bezier curves.
+-   **CSS springs**: Generate CSS springs - no animation library needed.
+-   **Custom ruleset**: Turn your LLM into a Motion expert.
 
 ![Bezier curve editing](images/bezier-editing.gif)
 
-<!---
--   **AI+ docs:** Latest docs for Motion+ features like `Cursor` and `Ticker`
--   **Curve visualisation:** Lets Copilot visually see springs and easing curves
--   **Spring editor:** Edit Motion springs inline, in real-time
--->
-
 ## Install
 
-Install via the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Motion.motion-vscode-extension)
+Get started with the [docs](https://motion.dev/docs/tools-vs-code-extension).
 
 ### Enable Motion+ features
 
-Generate a [personal access token](https://plus.motion.dev/profile), then click "Authenticate" in the Motion panel to open an input dialog for your token.
+Generate a [personal access token](https://plus.motion.dev), then click "Authenticate" in the Motion panel to open an input dialog for your token.
 
 ![Screenshot of the unauthenticated Motion panel](images/auth.png)
 
 ## Features
 
-### Copilot docs
+### Documentation
 
-Load the latest Motion documentation directly into Copilot. Add docs to a chat by clicking on "Add Context":
+LLMs are trained on data that is often out of date, leading to incorrect answers or inaccurate code. Motion Studio provides the latest documentation to your LLM so it's always up to speed.
 
 ![Screenshot of the Copilot chat window](images/readme-add-context.png)
 
-Navigating to "MCP Resources..."
-
-![Screenshot of the resources list](images/readme-add-context-2.png)
-
-Search for the docs you're looking for:
-
-![Screenshot of the search box](images/readme-add-context-3.png)
-
 [Learn more about Copilot docs](https://motion.dev/docs/ai-llm-documentation)
 
-### CSS generation
+### Bezier curve editing
 
-With Motion for Visual Studio Code , Copilot gains the ability to generate CSS `linear()` easing curves to create springs or other custom easing curves.
+Motion Studio enables real-time editing and preview of bezier curves, without having to leave your editor.
+
+![Bezier curve editing](images/bezier-editing.gif)
+
+### CSS springs
+
+Motion Studio gives your AI editor the ability to generate CSS linear() easing curves to create springs or other custom easing curves, using real Motion code.
 
 > Generate a CSS spring that's quite bouncy
 
@@ -60,30 +53,21 @@ With Motion for Visual Studio Code , Copilot gains the ability to generate CSS `
 
 [Learn more about CSS generation](https://motion.dev/docs/ai-generate-css-springs-and-easings-llm)
 
-### Bezier curve editing
+### Visualise springs and easing curves
 
-When editing a CSS or Motion bezier easing curve while the Motion panel's open, a bezier curve editor will appear. Changes will be immediately reflected in your code.
+Motion Studio enables your LLM to visualise springs and easing curves. Just select a spring or easing definition in your code and ask your LLM to "visualise" it - or prompt it to "visualise a stiff spring" or "visualise the CSS ease-out curve".
 
-![Bezier curve editing](images/bezier-editing.gif)
+[Learn more about visualisation](https://motion.dev/docs/ai-visualise-curves-llm)
 
-<!--
+### Rules
 
-## Extension Settings
+Turn your LLM into an animation expert with the Motion+ LLM rules.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+-   Best practices for when and how to add will-change.
+-   Coding styles to improve per-frame performance.
+-   When to animate transform vs independent transforms.
 
-For example:
-
-This extension contributes the following settings:
-
--   `myExtension.enable`: Enable/disable this extension.
--   `myExtension.thing`: Set to `blah` to do something.
-
-## Motion+ authentication
-
-To enable Motion+
-
--->
+[Learn more about rules](https://motion.dev/docs/ai-llm-rules)
 
 ## Issues & feature requests
 

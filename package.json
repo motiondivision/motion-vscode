@@ -1,9 +1,9 @@
 {
     "name": "motion-vscode-extension",
-    "displayName": "Motion",
-    "description": "VS Code and Copilot enhancements for Motion, the animation library for JavaScript, React, and Vue.",
+    "displayName": "Motion Studio",
+    "description": "Visual and AI animation editing tools for Motion, the animation library for JavaScript, React, and Vue.",
     "publisher": "motion",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "homepage": "https://motion.dev",
     "repository": {
         "type": "git",
@@ -25,7 +25,8 @@
         "vscode": "^1.101.0"
     },
     "categories": [
-        "AI"
+        "AI",
+        "Other"
     ],
     "icon": "images/logo.png",
     "activationEvents": [
