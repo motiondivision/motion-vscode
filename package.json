@@ -83,7 +83,7 @@
         "watch-tests": "tsc -p . -w --outDir out",
         "pretest": "yarn run compile-tests && yarn run compile",
         "check-types": "tsc --noEmit",
-        "new": "vsce package --no-yarn && vsce publish"
+        "new": "vsce package --no-yarn && vsce publish && node publish-ovsx.js"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.10",
@@ -96,6 +96,7 @@
         "@vscode/test-electron": "^2.5.2",
         "esbuild": "^0.25.3",
         "npm-run-all": "^4.1.5",
+        "ovsx": "^0.10.6",
         "typescript": "^5.8.3"
     },
     "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
