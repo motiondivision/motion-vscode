@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.9]
+
+-   Removing automatic MCP registration to support more editors.
+
+## [0.0.8]
+
+-   Updating to Motion Studio branding.
+
 ## [0.0.7]
 
 -   Allowing bezier editor SVG to overflow.

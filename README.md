@@ -17,7 +17,7 @@ Streamline your animation development process with Motion Studio. Edit CSS and M
 
 ## Install
 
-Get started with the [docs](https://motion.dev/docs/tools-vs-code-extension).
+Install the [extension](https://motion.dev/docs/studio-install#extension) to add visual editing tools, and add the [MCP](https://motion.dev/docs/studio-install#mcp) to add documentation and other AI editing features.
 
 ### Enable Motion+ features
 
