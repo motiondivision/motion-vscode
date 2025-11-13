@@ -33,7 +33,7 @@ LLMs are trained on data that is often out of date, leading to incorrect answers
 
 ![Screenshot of the Copilot chat window](images/readme-add-context.png)
 
-[Learn more about Copilot docs](https://motion.dev/docs/ai-llm-documentation)
+[Learn more about documentation for LLMs](https://motion.dev/docs/studio-llm-documentation)
 
 ### Bezier curve editing
 
@@ -51,13 +51,13 @@ Motion Studio gives your AI editor the ability to generate CSS linear() easing c
 600ms linear(0, 0.0121 /* ... */)
 ```
 
-[Learn more about CSS generation](https://motion.dev/docs/ai-generate-css-springs-and-easings-llm)
+[Learn more about CSS generation](https://motion.dev/docs/studio-generate-css)
 
 ### Visualise springs and easing curves
 
 Motion Studio enables your LLM to visualise springs and easing curves. Just select a spring or easing definition in your code and ask your LLM to "visualise" it - or prompt it to "visualise a stiff spring" or "visualise the CSS ease-out curve".
 
-[Learn more about visualisation](https://motion.dev/docs/ai-visualise-curves-llm)
+[Learn more about visualisation](https://motion.dev/docs/studio-visualise-curves)
 
 ### Rules
 
@@ -67,7 +67,7 @@ Turn your LLM into an animation expert with the Motion+ LLM rules.
 -   Coding styles to improve per-frame performance.
 -   When to animate transform vs independent transforms.
 
-[Learn more about rules](https://motion.dev/docs/ai-llm-rules)
+[Learn more about rules](https://motion.dev/docs/studio-llm-rules)
 
 ## Issues & feature requests
 
