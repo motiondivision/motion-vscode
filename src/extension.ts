@@ -19,6 +19,16 @@ export function activate(context: vscode.ExtensionContext) {
     /**
      * TODO: Restore MCP server definition provider when Cursor upgrades
      * to 1.101.0.
+     * 
+     * Add this to package.json
+     * 
+     * 
+        "mcpServerDefinitionProviders": [
+            {
+                "id": "motion.mcp-servers",
+                "label": "Motion"
+            }
+        ],
      */
 
     // const didChangeEmitter = new vscode.EventEmitter<void>()

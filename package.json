@@ -34,12 +34,6 @@
     ],
     "main": "./dist/extension.js",
     "contributes": {
-        "mcpServerDefinitionProviders": [
-            {
-                "id": "motion.mcp-servers",
-                "label": "Motion"
-            }
-        ],
         "commands": [
             {
                 "command": "motion.clearAuthToken",
